@@ -19,37 +19,24 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import { Car } from "./Car";
 import { easing } from "maath";
+import { Perf } from "r3f-perf";
+import Loading from "./Loading";
 
 
 const Scene = ({progress}) => {
   return (
       <Suspense
-        fallback={
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              position: "absolute",
-              top: "0",
-              backgroundColor: "gray",
-              display: "grid",
-              placeItems: "center",
-              fontSize: "4rem",
-              zIndex: "100000000",
-            }}
-          >
-            Loading...
-          </div>
-        }
+        fallback={<Loading/>}
       >
         <Canvas>
           {/* <axesHelper args={[50]} /> */}
+          {/* <Perf position={"bottom-left"} /> */}
 
           <PerspectiveCamera
             fov={45}
             near={0.1}
             far={10000}
-            position={[20, 10, 20]}
+            position={[26, 10, 26]}
             makeDefault
           />
 
@@ -75,7 +62,9 @@ const Scene = ({progress}) => {
           <pointLight intensity={500} color={"white"} position={[-10, 6, 10]} />
 
           <OrbitControls
+            enabled={false}
             enablePan={false}
+            enableRotate={false}
             dampingFactor={0.05}
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI / 2}
@@ -90,7 +79,7 @@ const Scene = ({progress}) => {
             // maxAzimuthAngle={Math.PI / 2+.3}
           />
 
-          <axesHelper args={[500]} />
+          {/* <axesHelper args={[500]} /> */}
 
           <Float speed={2} rotationIntensity={1}>
 

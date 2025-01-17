@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useControls } from "leva";
 import { gsap } from "gsap";
@@ -10,31 +10,22 @@ import { useFrame, useLoader } from "@react-three/fiber";
 gsap.registerPlugin(ScrollTrigger);
 
 export function Car({ progress }) {
-  // const group = useRef();
-  const { nodes, materials, animations } = useGLTF("/rim.glb");
-  const { nodes: nodes2, materials: materials2 } = useGLTF("/carriage.glb");
-  const { nodes: nodes3, materials: materials3 } = useGLTF("/old_car.glb");
-  const { nodes: nodes4, materials: materials4 } = useGLTF("/new_car.glb");
+  const { nodes, materials, animations } = useGLTF("/rim3.glb");
+  const { nodes: nodes2, materials: materials2 } = useGLTF("/carriage3.glb");
+  const { nodes: nodes3, materials: materials3 } = useGLTF("/old_car3.glb");
+  const { nodes: nodes4, materials: materials4 } = useGLTF("/new_car2.glb");
   //   const { actions } = useAnimations(animations, group);
   const texture = useLoader(THREE.TextureLoader, "/white-cir.webp"); // Use a circular texture image
-
-  //   const [particles, setParticles] = useState(true);
-  // const points = useRef();
   const bufferAttributeRef = useRef(null);
   const [gg, setGG] = useState([]);
   const [gg2, setGG2] = useState([]);
   const [gg3, setGG3] = useState([]);
   const [gg4, setGG4] = useState([]);
-  // const [morphFrom, setMorphFrom] = useState([]);
-  // const [morphTo, setMorphTo] = useState([]);
-  // const [zAxis, setZAxis] = useState(Math.PI / 2);
-  //   const [newModel, setNewModel] = useState(null);
-  //   const [count, setCount] = useState(1);
 
-  const { ...config } = useControls({
-    size: { value: 0.05, min: 0.01, max: 0.2 },
-    count: { value: 12025, min: 3025, max: 19623, step: 200 },
-  });
+  // const { ...config } = useControls({
+  //   size: { value: 0.05, min: 0.01, max: 0.2 },
+  //   count: { value: 12025, min: 3025, max: 19623, step: 200 },
+  // });
 
   //   function combineFloat32Arrays(...arrays) {
   //     let totalLength = arrays.reduce((sum, arr) => sum + arr.length, 0);
@@ -59,7 +50,7 @@ export function Car({ progress }) {
     const rotatedPositions = new Float32Array(positions.length);
 
     for (let i = 0; i < positions.length; i += 3) {
-      const x = positions[i];
+      const x = positions[i]+80;
       const y = positions[i + 1];
       const z = positions[i + 2];
 
@@ -69,7 +60,7 @@ export function Car({ progress }) {
       rotatedPositions[i + 2] = z; // z remains the same
     }
 
-    setGG(rotatedPositions.map((x) => x * 0.008));
+    setGG(rotatedPositions.slice(0,329529).map((x) => x * 0.008));
   }
 
   function toFloat32Array2() {
@@ -77,7 +68,7 @@ export function Car({ progress }) {
       nodes2.Cube004_Carriage_0.geometry.attributes.position.array
     );
     // console.log("gg", arr.length);
-    setGG2(arr);
+    setGG2(arr.slice(0,329529));
   }
 
   function toFloat32Array3() {
@@ -87,9 +78,9 @@ export function Car({ progress }) {
     // console.log("gg2", arr.length);
 
     // setGG3(arr.slice(0, 234690));
-    setGG3(arr);
+    setGG3(arr.slice(0,329529));
   }
- 
+
   function toFloat32Array4() {
     const theta = -Math.PI / 2; // -90 degrees in radians
     const cosTheta = Math.cos(theta);
@@ -120,24 +111,30 @@ export function Car({ progress }) {
       toFloat32Array3();
       toFloat32Array4();
     }
+
   }, [nodes]);
 
   useEffect(() => {
+  // useFrame(() => {
+    if(!bufferAttributeRef.current) return;
+    // console.log("progress", progress);
     if (gg.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0) {
       const positions = bufferAttributeRef.current.attributes.position.array;
       for (let i = 0; i < positions.length; i++) {
-        if (progress <= 0.33) {
+        if (0<= progress && progress <= 0.3333) {
           // Morph from gg to gg2
-          positions[i] = gg[i] + (gg2[i] - gg[i]) * (progress / 0.33);
-        } else if (progress <= 0.66) {
+          positions[i] = gg[i] + (gg2[i] - gg[i]) * (progress / 0.3333);
+        } else if (0.3333 < progress && progress <= 0.6666) {
           // Morph from gg2 to gg3
-          positions[i] = gg2[i] + (gg3[i] - gg2[i]) * ((progress - 0.33) / 0.33);
+          positions[i] =
+            gg2[i] + (gg3[i] - gg2[i]) * ((progress - 0.3333) / 0.3333);
         } else {
           // Morph from gg3 to gg4
-          positions[i] = gg3[i] + (gg4[i] - gg3[i]) * ((progress - 0.66) / 0.34);
+          positions[i] =
+            gg3[i] + (gg4[i] - gg3[i]) * ((progress - 0.6666) / 0.3333);
         }
       }
-      
+
       bufferAttributeRef.current.attributes.position.needsUpdate = true;
     }
 
@@ -163,11 +160,56 @@ export function Car({ progress }) {
     // // morphParticles();
 
     // setTimeout(morphParticles, 1000);
-  }, [progress]);
+  },[progress]);
+
+  // Interact and animate particles
+  // const strength = 0.1; // Interaction strength
+  // const radius = 0.5; // Interaction radius
+  // useFrame((state) => {
+  //   if (!bufferAttributeRef.current) return;
+  //   // console.log(state.pointer.y)
+  //   // const originalPositions = gg; // Use gg as the base positions
+  //   // console.log("positions: ", positions.length," and originalPositions: ", originalPositions.length);
+  //   // const mouse = mouseRef.current;
+
+  //   const positions = bufferAttributeRef.current.attributes.position.array;
+
+  //   // if(-.98<state.pointer.x && state.pointer.x<.98 && -.8<state.pointer.y && state.pointer.y<.8){
+  //     for (let i = 0; i < positions.length; i += 3) {
+  //       // const px = positions[i];
+  //       // const py = positions[i + 1];
+  //       // const pz = positions[i + 2];
+  //       // const ox = originalPositions[i];
+  //       // const oy = originalPositions[i + 1];
+  //       // const oz = originalPositions[i + 2];
+
+  //       const distance = Math.sqrt((state.pointer.x - positions[i])**2 + (state.pointer.y - positions[i+1])**2 );
+  //       // if (-.98<state.pointer.x && state.pointer.x<.98 && -.8<state.pointer.y && state.pointer.y<.8) {
+  //       if (distance < radius) {
+  //         // Move outward
+  //         const dx = positions[i] - state.pointer.x;
+  //         const dy = positions[i+1] - state.pointer.y;
+  //         const dz = positions[i+2]; // Z can stay the same
+  //         const length = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+  //         positions[i] += (dx / length) * strength;
+  //         positions[i + 1] += (dy / length) * strength;
+  //         // positions[i + 2] += (dy / length) * strength;
+  //       } else {
+  //         // Smooth return to original position
+  //         positions[i] += (gg[i] - positions[i]) * 0.05; // Smooth interpolation
+  //         positions[i + 1] += (gg[i+1] -positions[i+1]) * 0.05;
+  //         positions[i + 2] += (gg[i+2] - positions[i+2]) * 0.05;
+  //       }
+  //     }
+
+  //     bufferAttributeRef.current.attributes.position.needsUpdate = true;
+  //   // }
+
+  // });
 
   return (
     <group scale={[5, 5, 5]}>
-      {gg.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0 &&(
+      {gg.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0 && (
         <points
           rotation={[-Math.PI / 2, 0, Math.PI / 2]}
           scale={1}
@@ -184,8 +226,8 @@ export function Car({ progress }) {
           </bufferGeometry>
           <pointsMaterial
             map={texture}
-            size={config.size}
-            color="yellow"
+            size={0.05}
+            color="#f5cb58"
             // color="#f06c5b"
             sizeAttenuation
             // depthWrite={true}
@@ -200,7 +242,7 @@ export function Car({ progress }) {
   );
 }
 
-useGLTF.preload("/rim.glb");
-useGLTF.preload("/carriage.glb");
-useGLTF.preload("/old_car.glb");
-useGLTF.preload("/new_car.glb");
+useGLTF.preload("/rim3.glb");
+useGLTF.preload("/carriage3.glb");
+useGLTF.preload("/old_car3.glb");
+useGLTF.preload("/new_car2.glb");
