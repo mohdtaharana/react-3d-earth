@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Suspense, lazy } from "react";
 import { Canvas, useLoader, useFrame } from "@react-three/fiber";
 import {
@@ -22,46 +22,47 @@ import { easing } from "maath";
 import { Perf } from "r3f-perf";
 import Loading from "./Loading";
 
-
-const Scene = ({progress}) => {
+const Scene = ({ progress }) => {
+  const camera = useRef(null);
+  useFrame((state, delta) => {
+    if (camera.current) {
+      // camera.current.lookAt(0, 0, 0);
+    }
+  });
   return (
-      <Suspense
-        fallback={<Loading/>}
-      >
-        <Canvas>
-          {/* <axesHelper args={[50]} /> */}
-          {/* <Perf position={"bottom-left"} /> */}
+    // <Suspense
+    //   fallback={<Loading/>}
+    // >
+    <>
+      {/* <axesHelper args={[50]} /> */}
+      {/* <Perf position={"bottom-left"} /> */}
 
-          <PerspectiveCamera
-            fov={45}
-            near={0.1}
-            far={10000}
-            position={[26, 10, 26]}
-            makeDefault
-          />
+      <PerspectiveCamera
+        ref={camera}
+        fov={45}
+        near={0.1}
+        far={10000}
+        position={[-0, 0, 35]}
+        makeDefault
+      />
 
-            {/* <EffectComposer>
+      {/* <EffectComposer>
                 <Bloom
                 intensity={20}
-                    luminanceThreshold={0}
-                    luminanceSmoothing={0.9}
-                    // height={0}
+                luminanceThreshold={0}
+                luminanceSmoothing={0.9}
+                // height={0}
                 />
-            </EffectComposer> */}
-          
+                </EffectComposer> */}
 
-          {/* <color attach="background" args={["gray"]} /> */}
+      {/* <color attach="background" args={["gray"]} /> */}
 
-          <pointLight intensity={500} color={"white"} position={[10, 6, 10]} />
-          <pointLight
-            intensity={500}
-            color={"white"}
-            position={[-10, 6, -10]}
-          />
-          <pointLight intensity={500} color={"white"} position={[10, 6, -10]} />
-          <pointLight intensity={500} color={"white"} position={[-10, 6, 10]} />
+      <pointLight intensity={500} color={"white"} position={[10, 6, 10]} />
+      <pointLight intensity={500} color={"white"} position={[-10, 6, -10]} />
+      <pointLight intensity={500} color={"white"} position={[10, 6, -10]} />
+      <pointLight intensity={500} color={"white"} position={[-10, 6, 10]} />
 
-          <OrbitControls
+      {/* <OrbitControls
             enabled={false}
             enablePan={false}
             enableRotate={false}
@@ -77,17 +78,15 @@ const Scene = ({progress}) => {
             enableZoom
             // minAzimuthAngle={-Math.PI/2-.3}
             // maxAzimuthAngle={Math.PI / 2+.3}
-          />
+            /> */}
 
-          {/* <axesHelper args={[500]} /> */}
+      <axesHelper args={[500]} />
 
-          <Float speed={2} rotationIntensity={1}>
-
-          <Car progress={progress}/>
-          {/* <Rig /> */}
-          </Float>
-        </Canvas>
-      </Suspense>
+      <Float speed={2} rotationIntensity={1}>
+        <Car progress={progress} />
+        {/* <Rig /> */}
+      </Float>
+    </>
   );
 };
 

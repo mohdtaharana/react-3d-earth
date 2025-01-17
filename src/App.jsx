@@ -8,6 +8,7 @@ import Scene from "./Scene";
 import Loading from "./Loading";
 import { FaLinkedin } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { Canvas } from "@react-three/fiber";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,7 +31,7 @@ function App() {
   useEffect(() => {
     //get window width
     const width = window.innerWidth;
-    console.log("width", width);
+    // console.log("width", width);
     if (width < 1536) {
       // setXChange(0);
       gsap
@@ -174,7 +175,8 @@ function App() {
 
   window.addEventListener("scroll", () => {
     // console.log("scroll", window.scrollY);
-    let windowHeigh = window.innerHeight*.99;
+    let windowHeigh = window.innerHeight * 0.99;
+    // document.getElementById("invisi").style.height = `${4*windowHeigh}px`;
     if (window.scrollY < windowHeigh) {
       setActive("rimRef");
     } else if (
@@ -211,10 +213,19 @@ function App() {
 
   return (
     <main ref={main} className="overflow-x-hidden">
+
+{/* <div id="invisi" className="w-[100%] h-[100%] bg-transparent border-2 border-red-600 absolute top-0 z-[100000]">
+
+</div> */}
+
       <div className="fixed p-1 grid place-items-center sm:p-4 top-1/2 -translate-y-1/2 z-[100] border-0 text-white border-red-400 left-0 md:left-4">
         <p
           // ref={rimRef}
-          className={`cursor-pointer ${active==="rimRef"?"opacity-[1] shadow-[0_0_16px_#f5cb58]":"opacity-[.5] shadow-[0_0_0px_#f5cb58]"} z-[0] bg-[#f5cb58] py-2 px-[1.1rem] w-fit rounded-full text-2xl sm:text-3xl`}
+          className={`cursor-pointer ${
+            active === "rimRef"
+              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] w-fit rounded-full text-2xl sm:text-3xl`}
           onClick={() => scrollToSection("rim")}
         >
           0
@@ -222,7 +233,11 @@ function App() {
         <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
         <p
           // ref={carriageRef}
-          className={`cursor-pointer ${active==="carriageRef"?"opacity-[1] shadow-[0_0_16px_#f5cb58]":"opacity-[.5] shadow-[0_0_0px_#f5cb58]"} z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
+          className={`cursor-pointer ${
+            active === "carriageRef"
+              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
           onClick={() => scrollToSection("carriage")}
         >
           1
@@ -230,7 +245,11 @@ function App() {
         <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
         <p
           // ref={oldCarRef}
-          className={`cursor-pointer ${active==="oldCarRef"?"opacity-[1] shadow-[0_0_16px_#f5cb58]":"opacity-[.5] shadow-[0_0_0px_#f5cb58]"} z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
+          className={`cursor-pointer ${
+            active === "oldCarRef"
+              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
           onClick={() => scrollToSection("oldCar")}
         >
           2
@@ -238,7 +257,11 @@ function App() {
         <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
         <p
           // ref={newCarRef}
-          className={`cursor-pointer ${active==="newCarRef"?"opacity-[1] shadow-[0_0_16px_#f5cb58]":"opacity-[.5] shadow-[0_0_0px_#f5cb58]"} z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
+          className={`cursor-pointer ${
+            active === "newCarRef"
+              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
           onClick={() => scrollToSection("newCar")}
         >
           3
@@ -252,7 +275,7 @@ function App() {
             ref={textRef1}
             className="text-white text-center absolute top-[5%] mx-4 w-fit text-4xl lg:text-6xl xl:text-8xl font-bold border-0 border-yellow-500"
           >
-            A Brief Journey Through 
+            A Brief Journey Through
           </p>
           <p
             ref={textRef1}
@@ -260,20 +283,21 @@ function App() {
           >
             Automotive Evolution!
           </p>
-          <IoIosArrowDown className="absolute bottom-2 text-[#f5cb58] text-xl"/>
+          <IoIosArrowDown className="absolute bottom-2 text-[#f5cb58] text-xl" />
 
           <div
             ref={ref}
-            className="z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-0 border-blue-700"
+            className="pointer-events-none z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-2 border-blue-700"
           >
-            <Scene progress={scrollProgress} />
+            <Canvas>
+              <Scene progress={scrollProgress} />
+            </Canvas>
           </div>
           <p className="absolute bottom-0 w-[100%] h-[2px] bg-zinc-600"></p>
         </section>
 
-<p id="carriage"></p>
+        <p id="carriage"></p>
         <section className="grid relative place-items-center 2xl:flex z-[50] items-center border-0 border-red-700 justify-evenly h-[100vh]">
-          
           <p className="w-[50%] border-0 border-red-700"></p>
 
           <p className="text-white w-fit 2xl:w-[50%] text-center px-1 md:px-8 xl:px-4 text-base md:text-2xl lg:text-4xl font-semibold border-0 border-red-700">
@@ -293,10 +317,9 @@ function App() {
           </p>
           <p className="w-[50%] order-1 2xl:order-2 border-0 border-red-700"></p>
           <p className="absolute bottom-0 w-[100%] h-[2px] bg-zinc-600"></p>
-          
         </section>
 
-<p id="newCar"></p>
+        <p id="newCar"></p>
         <section className="grid relative place-items-center 2xl:flex z-[50] items-center border-0 border-red-700 justify-evenly h-[100vh]">
           <p className="w-[50%] border-0 border-red-700"></p>
 
@@ -307,16 +330,17 @@ function App() {
           </p>
         </section>
       </Suspense>
-          <div className="w-full z-[100] bg-black grid place-items-center">
-            <div
-            onClick={()=>{
-              window.open("https://linkedin.com/in/jahidkhan2003/")
-            }}
-            className="cursor-pointer flex items-center py-1 justify-center border-0 border-red-600 w-fit text-white">
-              <p>Website made by:</p>
-              <FaLinkedin className="text-white text-2xl ml-2" />
-            </div>
-          </div>
+      <div className="w-full z-[100] bg-black grid place-items-center">
+        <div
+          onClick={() => {
+            window.open("https://linkedin.com/in/jahidkhan2003/");
+          }}
+          className="cursor-pointer flex items-center py-1 justify-center border-0 border-red-600 w-fit text-white"
+        >
+          <p>Website made by:</p>
+          <FaLinkedin className="text-white text-2xl ml-2" />
+        </div>
+      </div>
     </main>
   );
 }

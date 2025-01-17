@@ -208,7 +208,7 @@ export function Car({ progress }) {
   // });
 
   return (
-    <group scale={[5, 5, 5]}>
+    <group rotation={[0,-Math.PI/5,0]} scale={[5, 5, 5]}>
       {gg.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0 && (
         <points
           rotation={[-Math.PI / 2, 0, Math.PI / 2]}
