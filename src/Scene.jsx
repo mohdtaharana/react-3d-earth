@@ -62,7 +62,7 @@ const Scene = ({ progress }) => {
       <pointLight intensity={500} color={"white"} position={[10, 6, -10]} />
       <pointLight intensity={500} color={"white"} position={[-10, 6, 10]} />
 
-      <OrbitControls
+      {/* <OrbitControls
             // enabled={false}
             enablePan={false}
             // enableRotate={false}
@@ -78,7 +78,7 @@ const Scene = ({ progress }) => {
             enableZoom
             // minAzimuthAngle={-Math.PI/2-.3}
             // maxAzimuthAngle={Math.PI / 2+.3}
-            />
+            /> */}
 
       <axesHelper args={[500]} />
 
