@@ -3,10 +3,28 @@
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  user-select: none;
 }
 
 :root{
   background-color: #191919;
+}
+
+.arrDown{
+  animation: anime infinite 1.5s linear;
+}
+
+@keyframes anime {
+  0%{
+    transform: translateY(-10px);
+  }
+  50%{
+    transform: translateY(5px);
+  }
+  100%{
+    transform: translateY(-10px);
+  }
+  
 }
 
 /* #root {

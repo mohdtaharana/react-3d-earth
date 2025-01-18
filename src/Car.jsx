@@ -10,10 +10,10 @@ import { useFrame, useLoader } from "@react-three/fiber";
 gsap.registerPlugin(ScrollTrigger);
 
 export function Car({ progress }) {
-  const { nodes, materials, animations } = useGLTF("/rim3.glb");
-  const { nodes: nodes2, materials: materials2 } = useGLTF("/carriage3.glb");
-  const { nodes: nodes3, materials: materials3 } = useGLTF("/old_car3.glb");
-  const { nodes: nodes4, materials: materials4 } = useGLTF("/new_car2.glb");
+  const { nodes, materials, animations } = useGLTF("/rim0.glb");
+  const { nodes: nodes2, materials: materials2 } = useGLTF("/carriage0.glb");
+  const { nodes: nodes3, materials: materials3 } = useGLTF("/old_car0.glb");
+  const { nodes: nodes4, materials: materials4 } = useGLTF("/new_car0.glb");
   //   const { actions } = useAnimations(animations, group);
   const texture = useLoader(THREE.TextureLoader, "/white-cir.webp"); // Use a circular texture image
   const bufferAttributeRef = useRef(null);
@@ -42,7 +42,7 @@ export function Car({ progress }) {
   //   }
 
   function toFloat32Array() {
-    const theta = -Math.PI; // -90 degrees in radians
+    const theta = -Math.PI/1.25; // -90 degrees in radians
     const cosTheta = Math.cos(theta);
     const sinTheta = Math.sin(theta);
 
@@ -60,15 +60,18 @@ export function Car({ progress }) {
       rotatedPositions[i + 2] = z; // z remains the same
     }
 
-    setGG(rotatedPositions.slice(0,329529).map((x) => x * 0.008));
+    // console.log("gg",rotatedPositions.length)
+
+    setGG(rotatedPositions.slice(0,420306).map((x) => x * 0.008));
   }
 
   function toFloat32Array2() {
     let arr = new Float32Array(
       nodes2.Cube004_Carriage_0.geometry.attributes.position.array
     );
+    // console.log("gg2",arr.length)
     // console.log("gg", arr.length);
-    setGG2(arr.slice(0,329529));
+    setGG2(arr.slice(0,420306));
   }
 
   function toFloat32Array3() {
@@ -78,7 +81,8 @@ export function Car({ progress }) {
     // console.log("gg2", arr.length);
 
     // setGG3(arr.slice(0, 234690));
-    setGG3(arr.slice(0,329529));
+    // console.log("gg3",arr.length)
+    setGG3(arr.slice(0,420306));
   }
 
   function toFloat32Array4() {
@@ -100,6 +104,7 @@ export function Car({ progress }) {
       rotatedPositions[i + 2] = z; // z remains the same
     }
 
+    // console.log("gg4", rotatedPositions.length);
     setGG4(rotatedPositions.map((x) => x * 4));
     // console.log("gg3", rotatedPositions.map((x) => x*4).length);
   }
@@ -226,9 +231,9 @@ export function Car({ progress }) {
           </bufferGeometry>
           <pointsMaterial
             map={texture}
-            size={0.5}
+            size={0.15}
             color="#f5cb58"
-            // color="#f06c5b"
+            // color="white"
             sizeAttenuation
             // depthWrite={true}
             // emissive={new THREE.Color(0, 1, 0)}
@@ -242,7 +247,7 @@ export function Car({ progress }) {
   );
 }
 
-useGLTF.preload("/rim3.glb");
-useGLTF.preload("/carriage3.glb");
-useGLTF.preload("/old_car3.glb");
-useGLTF.preload("/new_car2.glb");
+useGLTF.preload("/rim0.glb");
+useGLTF.preload("/carriage0.glb");
+useGLTF.preload("/old_car0.glb");
+useGLTF.preload("/new_car0.glb");

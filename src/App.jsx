@@ -14,19 +14,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   // const [count, setCount] = useState(0)
-  const tl = gsap.timeline();
   const ref = useRef(null);
   const main = useRef(null);
   const textRef1 = useRef(null);
-  const textRef2 = useRef(null);
-  const trigger = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [active, setActive] = useState("rimRef");
-  // const [xChange, setXChange] = useState(25);
-  // const rimRef = useRef(null);
-  // const carriageRef = useRef(null);
-  // const oldCarRef = useRef(null);
-  // const newCarRef = useRef(null);
 
   useEffect(() => {
     //get window width
@@ -136,36 +128,6 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   tl.to(ref.current, {
-  //     ease: "power1.in",
-
-  //     scrollTrigger: {
-  //       trigger: main.current,
-  //       start: "top top",
-  //       end: "57% bottom",
-  //       scrub: 1,
-  //       markers:true,
-  //     },
-  //     opacity: 0.1,
-  //     x: "36.5vw",
-  //     y: "100vh",
-  //   })
-  //   tl.to(ref.current, {
-  //     ease: "power1.in",
-  //     // scrollTrigger: {
-  //     //   trigger: main.current, // Element to trigger the animation
-  //     //   start: "30% top",
-  //     //   end: "50% bottom",
-  //     //   scrub: 1,
-  //     //   markers: true, // Debug markers for start/end points
-  //     // },
-  //     opacity: 1,
-  //     x: "0vw",
-  //     y: "100vh",
-  //   });
-  // }, []);
-
   const scrollToSection = (target) => {
     const element = document.getElementById(`${target}`);
     if (element) {
@@ -194,81 +156,59 @@ function App() {
     }
   });
 
-  // useEffect(() => {
-  //   rimRef.current.style.opacity = .5;
-  //   rimRef.current.style.boxShadow = "0 0 16px #f5cb58";
-  //   carriageRef.current.style.opacity = .5;
-  //   oldCarRef.current.style.opacity = .5;
-  //   newCarRef.current.style.opacity = .5;
-  //   if (active === "rimRef") {
-  //     active.current.style.opacity = 1;
-  //   } else if (active === "carriageRef") {
-  //     carriageRef.current.style.opacity = 1;
-  //   } else if (active === "oldCarRef") {
-  //     oldCarRef.current.style.opacity = 1;
-  //   } else if (active === "newCarRef") {
-  //     newCarRef.current.style.opacity = 1;
-  //   }
-  // }, [active]);
-
   return (
-    <main ref={main} className="overflow-x-hidden">
+    <Suspense fallback={<Loading />}>
+      <main ref={main} className="overflow-x-hidden">
+        <div className="fixed p-1 grid place-items-center sm:p-4 top-1/2 -translate-y-1/2 z-[100] border-0 text-white border-red-400 left-0 md:left-4">
+          <button
+            // ref={rimRef}
+            className={`cursor-pointer ${
+              active === "rimRef"
+                ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+                : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+            } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] w-fit rounded-full text-2xl sm:text-3xl`}
+            onClick={() => scrollToSection("rim")}
+          >
+            0
+          </button>
+          <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
+          <button
+            // ref={carriageRef}
+            className={`cursor-pointer ${
+              active === "carriageRef"
+                ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+                : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+            } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
+            onClick={() => scrollToSection("carriage")}
+          >
+            1
+          </button>
+          <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
+          <button
+            // ref={oldCarRef}
+            className={`cursor-pointer ${
+              active === "oldCarRef"
+                ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+                : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+            } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
+            onClick={() => scrollToSection("oldCar")}
+          >
+            2
+          </button>
+          <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
+          <button
+            // ref={newCarRef}
+            className={`cursor-pointer ${
+              active === "newCarRef"
+                ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
+                : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
+            } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
+            onClick={() => scrollToSection("newCar")}
+          >
+            3
+          </button>
+        </div>
 
-{/* <div id="invisi" className="w-[100%] h-[100%] bg-transparent border-2 border-red-600 absolute top-0 z-[100000]">
-
-</div> */}
-
-      <div className="fixed p-1 grid place-items-center sm:p-4 top-1/2 -translate-y-1/2 z-[100] border-0 text-white border-red-400 left-0 md:left-4">
-        <p
-          // ref={rimRef}
-          className={`cursor-pointer ${
-            active === "rimRef"
-              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
-              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
-          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] w-fit rounded-full text-2xl sm:text-3xl`}
-          onClick={() => scrollToSection("rim")}
-        >
-          0
-        </p>
-        <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
-        <p
-          // ref={carriageRef}
-          className={`cursor-pointer ${
-            active === "carriageRef"
-              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
-              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
-          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
-          onClick={() => scrollToSection("carriage")}
-        >
-          1
-        </p>
-        <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
-        <p
-          // ref={oldCarRef}
-          className={`cursor-pointer ${
-            active === "oldCarRef"
-              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
-              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
-          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
-          onClick={() => scrollToSection("oldCar")}
-        >
-          2
-        </p>
-        <p className="w-[2px] z-[9] h-[3rem] bg-zinc-600"></p>
-        <p
-          // ref={newCarRef}
-          className={`cursor-pointer ${
-            active === "newCarRef"
-              ? "opacity-[1] shadow-[0_0_16px_#f5cb58]"
-              : "opacity-[.5] shadow-[0_0_0px_#f5cb58]"
-          } z-[0] bg-[#f5cb58] py-2 px-[1.1rem] rounded-full text-2xl sm:text-3xl`}
-          onClick={() => scrollToSection("newCar")}
-        >
-          3
-        </p>
-      </div>
-
-      <Suspense fallback={<Loading />}>
         <p id="rim"></p>
         <section className="z-[55] relative grid place-items-center border-0 border-white h-[100vh]">
           <p
@@ -283,11 +223,11 @@ function App() {
           >
             Automotive Evolution!
           </p>
-          <IoIosArrowDown className="absolute bottom-2 text-[#f5cb58] text-xl" />
+          <IoIosArrowDown className="arrDown absolute bottom-2 text-[#f5cb58] text-xl" />
 
           <div
             ref={ref}
-            className="pointer-events-none z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-2 border-blue-700"
+            className="pointer-events-none z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-0 border-blue-700"
           >
             <Canvas>
               <Scene progress={scrollProgress} />
@@ -329,67 +269,20 @@ function App() {
             technology, prioritizing sustainability and convenience.
           </p>
         </section>
-      </Suspense>
-      <div className="w-full z-[100] bg-black grid place-items-center">
-        <div
-          onClick={() => {
-            window.open("https://linkedin.com/in/jahidkhan2003/");
-          }}
-          className="cursor-pointer flex items-center py-1 justify-center border-0 border-red-600 w-fit text-white"
-        >
-          <p>Website made by:</p>
-          <FaLinkedin className="text-white text-2xl ml-2" />
+        <div className="w-full z-[100] bg-black grid place-items-center">
+          <div
+            onClick={() => {
+              window.open("https://linkedin.com/in/jahidkhan2003/");
+            }}
+            className="cursor-pointer flex items-center py-1 justify-center border-0 border-red-600 w-fit text-white"
+          >
+            <p>Website made by:</p>
+            <FaLinkedin className="text-white text-2xl ml-2" />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </Suspense>
   );
 }
 
 export default App;
-
-// import React, { useEffect, useRef } from "react";
-// import { gsap } from "gsap";
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// // Register the ScrollTrigger plugin
-// gsap.registerPlugin(ScrollTrigger);
-
-// const ScrollTriggerExample = () => {
-//   const boxRef = useRef(null);
-
-//   useEffect(() => {
-//     // GSAP animation with ScrollTrigger
-//     gsap.fromTo(
-//       boxRef.current,
-//       { opacity: 0, y: 100 }, // Start state
-//       {
-//         opacity: 1,
-//         y: 0,
-//         scrollTrigger: {
-//           trigger: boxRef.current, // Element to trigger the animation
-//           start: "top 80%",       // When animation starts (element top hits 80% viewport height)
-//           end: "top 30%",         // When animation ends (element top hits 30% viewport height)
-//           scrub: true,            // Smooth animation based on scroll
-//           markers: true,          // Debug markers for start/end points
-//         },
-//       }
-//     );
-//   }, []);
-
-//   return (
-//     <div style={{ height: "200vh", padding: "50px" }}>
-//       <h1>Scroll down to see the animation</h1>
-//       <div
-//         ref={boxRef}
-//         style={{
-//           width: "200px",
-//           height: "200px",
-//           background: "blue",
-//           margin: "100px auto",
-//         }}
-//       ></div>
-//     </div>
-//   );
-// };
-
-// export default ScrollTriggerExample;

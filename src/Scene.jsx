@@ -23,10 +23,10 @@ import { Perf } from "r3f-perf";
 import Loading from "./Loading";
 
 const Scene = ({ progress }) => {
-  const camera = useRef(null);
+  const cameraRef = useRef();
   useFrame((state, delta) => {
-    if (camera.current) {
-      // camera.current.lookAt(0, 0, 0);
+    if (cameraRef.current) {
+      cameraRef.current.lookAt(0, 0, 0);
     }
   });
   return (
@@ -38,11 +38,11 @@ const Scene = ({ progress }) => {
       {/* <Perf position={"bottom-left"} /> */}
 
       <PerspectiveCamera
-        ref={camera}
+        ref={cameraRef}
         fov={45}
         near={0.1}
         far={10000}
-        position={[-0, 0, 35]}
+        position={[10, 15, 35]}
         makeDefault
       />
 
@@ -80,7 +80,7 @@ const Scene = ({ progress }) => {
             // maxAzimuthAngle={Math.PI / 2+.3}
             /> */}
 
-      <axesHelper args={[500]} />
+      {/* <axesHelper args={[500]} /> */}
 
       <Float speed={2} rotationIntensity={1}>
         <Car progress={progress} />
@@ -90,17 +90,17 @@ const Scene = ({ progress }) => {
   );
 };
 
-function Rig() {
-  useFrame((state, delta) => {
-    easing.damp3(
-      state.camera.position,
-      [19 + state.pointer.x * 4, 8 + state.pointer.y * 4, 20],
-      0.4,
-      delta
-    );
-    // easing.damp3(state.camera.position, [5 + state.pointer.x, 5 +Math.atan2(state.pointer.x, state.pointer.y) * 2, 15], 0.4, delta)
-    state.camera.lookAt(0, 0, 0);
-  });
-}
+// function Rig() {
+//   useFrame((state, delta) => {
+//     easing.damp3(
+//       state.camera.position,
+//       [19 + state.pointer.x * 4, 8 + state.pointer.y * 4, 20],
+//       0.4,
+//       delta
+//     );
+//     // easing.damp3(state.camera.position, [5 + state.pointer.x, 5 +Math.atan2(state.pointer.x, state.pointer.y) * 2, 15], 0.4, delta)
+//     state.camera.lookAt(0, 0, 0);
+//   });
+// }
 
 export default Scene;
