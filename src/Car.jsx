@@ -231,7 +231,8 @@ export function Car({ progress }) {
           </bufferGeometry>
           <pointsMaterial
             map={texture}
-            size={0.15}
+            // size={0.15}
+            size={0.5}
             color="#f5cb58"
             // color="white"
             sizeAttenuation

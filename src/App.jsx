@@ -9,6 +9,7 @@ import Loading from "./Loading";
 import { FaLinkedin } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { Canvas } from "@react-three/fiber";
+import { toast } from "react-toastify";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -126,6 +127,13 @@ function App() {
       //0.8 will means it will start at 80% of the total scroll duration, so there will be slight delay
       //Note: by default these 2 '.to' will take 50% of total Scroll Duration each
     }
+
+    toast.info("Use the number timeline below to explore!", {
+      autoClose: 10000,
+      position: "top-left",
+      theme: "dark",
+      closeOnClick: true,
+    });
   }, []);
 
   const scrollToSection = (target) => {
@@ -157,8 +165,8 @@ function App() {
   });
 
   return (
-    <Suspense fallback={<Loading />}>
-      <main ref={main} className="overflow-x-hidden">
+    <main ref={main} className="overflow-x-hidden border-0 border-cyan-300">
+      <Suspense fallback={<Loading />}>
         <div className="fixed p-1 grid place-items-center sm:p-4 top-1/2 -translate-y-1/2 z-[100] border-0 text-white border-red-400 left-0 md:left-4">
           <button
             // ref={rimRef}
@@ -223,11 +231,11 @@ function App() {
           >
             Automotive Evolution!
           </p>
-          <IoIosArrowDown className="arrDown absolute bottom-2 text-[#f5cb58] text-xl" />
+          {/* <IoIosArrowDown className="arrDown absolute bottom-2 text-[#f5cb58] text-xl" /> */}
 
           <div
             ref={ref}
-            className="pointer-events-none z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-0 border-blue-700"
+            className="pointer-events-none cursor-grab z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-0 border-blue-700"
           >
             <Canvas>
               <Scene progress={scrollProgress} />
@@ -268,20 +276,21 @@ function App() {
             AI connectivity, represent the pinnacle of transportation
             technology, prioritizing sustainability and convenience.
           </p>
-        </section>
-        <div className="w-full z-[100] bg-black grid place-items-center">
-          <div
-            onClick={() => {
-              window.open("https://linkedin.com/in/jahidkhan2003/");
-            }}
-            className="cursor-pointer flex items-center py-1 justify-center border-0 border-red-600 w-fit text-white"
-          >
-            <p>Website made by:</p>
-            <FaLinkedin className="text-white text-2xl ml-2" />
+
+          <div className="w-full absolute bottom-0 bg-black grid place-items-center border-0 border-red-600">
+            <div
+              onClick={() => {
+                window.open("https://linkedin.com/in/jahidkhan2003/");
+              }}
+              className="cursor-pointer flex items-center py-1 justify-center border-0 border-red-600 w-fit text-white"
+            >
+              <p>Website made by:</p>
+              <FaLinkedin className="text-white text-2xl ml-2" />
+            </div>
           </div>
-        </div>
-      </main>
-    </Suspense>
+        </section>
+      </Suspense>
+    </main>
   );
 }
 
