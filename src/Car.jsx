@@ -17,10 +17,18 @@ export function Car({ progress }) {
   //   const { actions } = useAnimations(animations, group);
   const texture = useLoader(THREE.TextureLoader, "/white-cir.webp"); // Use a circular texture image
   const bufferAttributeRef = useRef(null);
-  const [gg, setGG] = useState([]);
+  const [gg1, setGG1] = useState([]);
   const [gg2, setGG2] = useState([]);
   const [gg3, setGG3] = useState([]);
   const [gg4, setGG4] = useState([]);
+  const [size, setSize] = useState(0.1);
+  const [to, setTo] = useState(0);
+
+  useEffect(() => {
+    if (window.innerWidth < 1000) {
+      setSize(0.5);
+    }
+  }, []);
 
   // const { ...config } = useControls({
   //   size: { value: 0.05, min: 0.01, max: 0.2 },
@@ -42,7 +50,7 @@ export function Car({ progress }) {
   //   }
 
   function toFloat32Array() {
-    const theta = -Math.PI/1.25; // -90 degrees in radians
+    const theta = -Math.PI / 1.25; // -90 degrees in radians
     const cosTheta = Math.cos(theta);
     const sinTheta = Math.sin(theta);
 
@@ -50,7 +58,7 @@ export function Car({ progress }) {
     const rotatedPositions = new Float32Array(positions.length);
 
     for (let i = 0; i < positions.length; i += 3) {
-      const x = positions[i]+80;
+      const x = positions[i] + 80;
       const y = positions[i + 1];
       const z = positions[i + 2];
 
@@ -60,18 +68,18 @@ export function Car({ progress }) {
       rotatedPositions[i + 2] = z; // z remains the same
     }
 
-    // console.log("gg",rotatedPositions.length)
+    // console.log("gg",rotatedPositions[0])
 
-    setGG(rotatedPositions.slice(0,420306).map((x) => x * 0.008));
+    setGG1(rotatedPositions.slice(0, 420306).map((x) => x * 0.008));
   }
 
   function toFloat32Array2() {
     let arr = new Float32Array(
       nodes2.Cube004_Carriage_0.geometry.attributes.position.array
     );
-    // console.log("gg2",arr.length)
+    // console.log("gg2",arr[0])
     // console.log("gg", arr.length);
-    setGG2(arr.slice(0,420306));
+    setGG2(arr.slice(0, 420306));
   }
 
   function toFloat32Array3() {
@@ -82,7 +90,7 @@ export function Car({ progress }) {
 
     // setGG3(arr.slice(0, 234690));
     // console.log("gg3",arr.length)
-    setGG3(arr.slice(0,420306));
+    setGG3(arr.slice(0, 420306));
   }
 
   function toFloat32Array4() {
@@ -116,19 +124,20 @@ export function Car({ progress }) {
       toFloat32Array3();
       toFloat32Array4();
     }
-
   }, [nodes]);
 
   useEffect(() => {
-  // useFrame(() => {
-    if(!bufferAttributeRef.current) return;
+    // useFrame(() => {
+      // console.log("progress");
+    if (!bufferAttributeRef.current) return;
     // console.log("progress", progress);
-    if (gg.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0) {
+    if (gg1.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0) {
       const positions = bufferAttributeRef.current.attributes.position.array;
+      // console.log("change ",positions[0])
       for (let i = 0; i < positions.length; i++) {
         if (0<= progress && progress <= 0.3333) {
           // Morph from gg to gg2
-          positions[i] = gg[i] + (gg2[i] - gg[i]) * (progress / 0.3333);
+          positions[i] = gg1[i] + (gg2[i] - gg1[i]) * (progress / 0.3333);
         } else if (0.3333 < progress && progress <= 0.6666) {
           // Morph from gg2 to gg3
           positions[i] =
@@ -143,29 +152,43 @@ export function Car({ progress }) {
       bufferAttributeRef.current.attributes.position.needsUpdate = true;
     }
 
-    // const morphParticles = () => {
-    //   const currentPositions =
-    //     bufferAttributeRef.current.attributes.position.array;
-    //   // console.log("currentPositions",currentPositions.length/3)
-    //   gsap.to(currentPositions, {
-    //     duration: 4, // Duration of the morphing
-    //     ease: "power2.inOut",
-    //     onUpdate: () => {
-    //       // Update the buffer geometry with the tweened positions
-    //       bufferAttributeRef.current.attributes.position.needsUpdate = true;
-    //     },
-    //     // Animate to the new positions (gg2)
-    //     onComplete: () => console.log("Morphing complete!"),
-    //     ...Array.from(gg2).reduce((acc, value, index) => {
-    //       acc[index] = value;
-    //       return acc;
-    //     }, {}),
-    //   });
-    // };
-    // // morphParticles();
+    // if (0 <= progress && progress <= 0.05 && gg1.length > 0 && to !== 1) {
+    //   setTo(1);
+    // }
+    // else if(0.25< progress && progress <= 0.3 && gg2.length>0 && to!==2){
+    //   setTo(2);
+    // }
+    // else if(0.5< progress && progress <= 0.55 && gg3.length>0 && to!==3){
+    //   setTo(3);
+    // }
+    // else if(0.75< progress && progress <= 8 && gg4.length>0 && to!==4){
+    //   setTo(4);
+    // }
+  }, [progress]);
 
-    // setTimeout(morphParticles, 1000);
-  },[progress]);
+  // useEffect(() => {
+  //   console.log("to: ", to);
+  //   const morphParticles = (toArray) => {
+  //     const currentPositions =
+  //       bufferAttributeRef.current.attributes.position.array;
+  //     gsap.to(currentPositions, {
+  //       duration: 4,
+  //       ease: "power2.inOut",
+  //       onUpdate: () => {
+  //         bufferAttributeRef.current.attributes.position.needsUpdate = true;
+  //       },
+  //       onComplete: () => console.log("Morphing complete!"),
+  //       // Animate to the new positions (gg2)
+  //       ...Array.from(gg3).reduce((acc, value, index) => {
+  //         acc[index] = value;
+  //         return acc;
+  //       }, {}),
+  //     });
+  //   };
+  //   if (to != 0) {
+  //     setTimeout(morphParticles(to), 2000);
+  //   }
+  // }, [to]);
 
   // Interact and animate particles
   // const strength = 0.1; // Interaction strength
@@ -213,8 +236,8 @@ export function Car({ progress }) {
   // });
 
   return (
-    <group rotation={[0,-Math.PI/5,0]} scale={[5, 5, 5]}>
-      {gg.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0 && (
+    <group rotation={[0, -Math.PI / 5, 0]} scale={[5, 5, 5]}>
+      {gg1.length > 0 && gg2.length > 0 && gg3.length > 0 && gg4.length > 0 && (
         <points
           rotation={[-Math.PI / 2, 0, Math.PI / 2]}
           scale={1}
@@ -225,14 +248,14 @@ export function Car({ progress }) {
             <bufferAttribute
               attach="attributes-position"
               //   count={17025}
-              args={[new Float32Array(gg), 3]}
+              args={[new Float32Array(gg1), 3]}
               //   itemSize={3}
             />
           </bufferGeometry>
           <pointsMaterial
             map={texture}
             // size={0.15}
-            size={0.5}
+            size={size}
             color="#f5cb58"
             // color="white"
             sizeAttenuation
