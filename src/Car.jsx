@@ -135,17 +135,17 @@ export function Car({ progress }) {
       const positions = bufferAttributeRef.current.attributes.position.array;
       // console.log("change ",positions[0])
       for (let i = 0; i < positions.length; i++) {
-        if (0<= progress && progress <= 0.3333) {
+        if (0<= progress && progress <= 0.33333333) {
           // Morph from gg to gg2
-          positions[i] = gg1[i] + (gg2[i] - gg1[i]) * (progress / 0.3333);
-        } else if (0.3333 < progress && progress <= 0.6666) {
+          positions[i] = gg1[i] + (gg2[i] - gg1[i]) * (progress / 0.33333333);
+        } else if (0.33333333 < progress && progress <= 0.66666666) {
           // Morph from gg2 to gg3
           positions[i] =
-            gg2[i] + (gg3[i] - gg2[i]) * ((progress - 0.3333) / 0.3333);
+            gg2[i] + (gg3[i] - gg2[i]) * ((progress - 0.33333333) / 0.33333333);
         } else {
           // Morph from gg3 to gg4
           positions[i] =
-            gg3[i] + (gg4[i] - gg3[i]) * ((progress - 0.6666) / 0.3333);
+            gg3[i] + (gg4[i] - gg3[i]) * ((progress - 0.66666666) / 0.33333333);
         }
       }
 

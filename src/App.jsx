@@ -26,6 +26,7 @@ function App() {
     const width = window.innerWidth;
     // console.log("width", width);
     if (width < 1536) {
+      console.log("less than 1536");
       // setXChange(0);
       gsap
         .timeline({
@@ -77,6 +78,7 @@ function App() {
       //0.8 will means it will start at 80% of the total scroll duration, so there will be slight delay
       //Note: by default these 2 '.to' will take 50% of total Scroll Duration each
     } else {
+      console.log("more than 1536");
       gsap
         .timeline({
           // ease: 'power1.in',
@@ -235,7 +237,7 @@ function App() {
 
           <div
             ref={ref}
-            className="pointer-events-none cursor-grab z-[55] absolute top-1/2 -translate-y-1/2 xl:top-0 xl:-translate-y-0 left-1/2 -translate-x-1/2 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-0 border-blue-700"
+            className="pointer-events-none cursor-grab z-[55] xl:top-0 xl:-translate-y-0 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-2 border-blue-700"
           >
             <Canvas>
               <Scene progress={scrollProgress} />
