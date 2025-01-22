@@ -237,7 +237,7 @@ function App() {
 
           <div
             ref={ref}
-            className="pointer-events-none cursor-grab z-[55] xl:top-0 xl:-translate-y-0 h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-2 border-blue-700"
+            className="pointer-events-none cursor-grab z-[55] h-[50vh] xl:h-[100vh] w-[100vw] 2xl:w-[50vw] border-0 border-blue-700"
           >
             <Canvas>
               <Scene progress={scrollProgress} />
